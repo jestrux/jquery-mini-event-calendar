@@ -86,11 +86,9 @@
     cursor: default;
     padding: 0;
     position: relative;
-    height: 0;
     background-color: transparent;
     color: inherit;
-    padding-top: calc(35% / 7);
-    padding-bottom: calc(35% / 7);
+    padding: 1em;
     border: 0.1em solid transparent;
     outline-color: #777;
     font-size: 0.9em;
