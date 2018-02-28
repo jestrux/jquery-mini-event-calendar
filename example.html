@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="src/mini-event-calendar.min.css">
+
+	<h3>With events...</h3>
+	<div id="calendar" style="width: 30%;"></div> <br>
+
+	<h3>Without events....</h3>
+	<div id="calendar2" style="width: 25%;"></div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="src/mini-event-calendar.min.js"></script>
+
+	<script>
+	    var db_events = [
+	    	{
+	            title: "An event occurs on 28th.",
+	            date: 1519806678259,
+	            link: "events.com/ev2"
+	        },
+	        {
+	            title: "An important event.",
+	            date: 1519851600000,
+	            link: "events.com/ev1"
+	        }
+	    ];
+
+		$(document).ready(function(){
+			$("#calendar").MEC({
+				calendar_link: "example.com/myCalendar",
+				events: db_events
+			});
+
+			//if you don't have events, use
+			$("#calendar2").MEC();
+		});
+	</script>
+</body>
+</html>
