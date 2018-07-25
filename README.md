@@ -16,4 +16,5 @@ View of no events in month with reduced calendar width.
 View of event happening today
 
 ![Event other day](/event-clicked.png?raw=true "Event other day")
+
 Selected event happening on a day other than today.
