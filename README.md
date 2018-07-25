@@ -8,9 +8,11 @@ Check out `example.html` to see how to use.
 
 ## screenshots
 ![No events](/no-events.png?raw=true "No event")
+
 View of no events in month with reduced calendar width.
 
 ![Event today](/event-today.png?raw=true "Event today")
+
 View of event happening today
 
 ![Event other day](/event-clicked.png?raw=true "Event other day")
