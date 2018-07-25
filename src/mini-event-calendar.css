@@ -79,7 +79,6 @@
 #calTbody .a-date > span{
     display: block;
     font-size: 1em;
-    margin-top: -0.5em;
 }
 
 #calTbody .a-date{
@@ -90,7 +89,7 @@
     color: inherit;
     padding: 1em;
     border: 0.1em solid transparent;
-    outline-color: #777;
+    outline: none;
     font-size: 0.9em;
 }
 
@@ -102,7 +101,7 @@
 #calTbody .a-date.event:before{
     content: '';
     position: absolute;
-    top: -0.1em;
+    top: 0.2em;
     right: 0;
     left: 0;
     margin: auto;
@@ -118,21 +117,14 @@
     outline: 0;
 }
 
-#calTbody .a-date.current:before,
-#calTbody .a-date:focus:before,
-#calTbody .a-date:active:before{
-    display: none;
-    background-color: #000;
-}
-
 #calTbody .a-date.current.event{
     background-color: #fffc23;
     color: #000;
 }
 
-#calTbody .a-date:focus.event,
-#calTbody .a-date:active.event{
-    border-color: #a09e45;
+#calTbody .a-date:focus,
+#calTbody .a-date:active{
+    background: #3f4042;
 }
 
 #calTFooter{
@@ -156,7 +148,6 @@
 
 #calTFooter #calLink:hover{
     background-color: #555;
-    /*background: rgba(255,255,255,0.1);*/
 }
 
 #calTFooter #eventTitle{
