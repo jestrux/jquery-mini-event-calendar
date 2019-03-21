@@ -28,7 +28,9 @@ You can also use [example.html](/example.html?raw=true) as a reference point
 ## Screenshots
 
 Event happening today
+
 ![Event today](/screenshots/event-today.png?raw=true "Event today screenshot")
 
 Calendar starts on monday
+
 ![Event other day](/screenshots/calendar-starts-monday.png?raw=true "Calendar starts on monday screenshot")
