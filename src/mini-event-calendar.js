@@ -1,5 +1,29 @@
 (function( $ ) {
-	var calenderTpl = '<div id="calTitle"><button class="month-mover prev"><svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button><div id="monthYear"></div><button class="month-mover next"><svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button></div><div><div id="calThead"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div><div id="calTbody"></div></div><div id="calTFooter"><h3 id="eventTitle">No events today.</h3><a href="javascript:void(0);" id="calLink">ALL EVENTS</a></div>';
+	var calenderTpl = `
+		<div id="calTitle">
+			<button class="month-mover prev">
+				<svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+					<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+				</svg>
+			</button>
+			<div id="monthYear"></div>
+			<button class="month-mover next">
+				<svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+					<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+				</svg>
+			</button>
+		</div>
+		<div>
+			<div id="calThead"></div>
+			<div id="calTbody"></div>
+		</div>
+		<div id="calTFooter">
+			<h3 id="eventTitle">No events today.</h3>
+			<a href="javascript:void(0);" id="calLink">ALL EVENTS</a>
+		</div>
+	`;
+	var weekDaysFromSunday = '<div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>';
+	var weekDaysFromMonday = '<div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div>';
 	var shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
 	var today = new Date();
 	var curMonth = today.getMonth();
@@ -7,15 +31,17 @@
 
     $.fn.miniEventCalendar = $.fn.MEC = function(options) {
     	var settings = $.extend({
-    		calendar_link : "",
-    		events: []
+			calendar_link : "",
+    		events: [],
+			from_monday: false
         }, options );
 
         var miniCalendar = this;
 
         miniCalendar.addClass('mini-cal').html(calenderTpl);
 
-        var tbody = miniCalendar.find("#calTbody");
+		var thead = miniCalendar.find("#calThead");
+		var tbody = miniCalendar.find("#calTbody");
 		var calTitle = miniCalendar.find("#monthYear");
 		var calFooter = miniCalendar.find("#calTFooter");
         var eventTitle = miniCalendar.find("#eventTitle");
@@ -24,6 +50,11 @@
         eventTitle.text("No events today.");
 		eventsLink.text("ALL EVENTS");
 		eventsLink.attr("href", settings.calendar_link);
+
+		if(settings.from_monday)
+			thead.html(weekDaysFromMonday);
+		else
+			thead.html(weekDaysFromSunday);
 
 		if(!settings.calendar_link.length && !settings.events.length)
 			calFooter.css("display", "none");
@@ -53,8 +84,16 @@
 			var ldate = new Date(year, month);
 			var dt = new Date(ldate);
 
-			if(ldate.getDate() === 1 && dt.getDay() != 1)
-				tbody.append(lastDaysOfPrevMonth(dt.getDay()));
+			if(!settings.from_monday){
+				var weekDay = dt.getDay();
+				if(ldate.getDate() === 1 && weekDay != 1)
+					tbody.append(lastDaysOfPrevMonth(weekDay));
+			}
+			else{
+				var weekDay = dt.getDay() > 0 ? dt.getDay() - 1 : 6;
+				if(ldate.getDate() === 1 && weekDay !== 0)
+					tbody.append(lastDaysOfPrevMonth(weekDay));
+			}
 
 			while (ldate.getMonth() === month) {
      			dt = new Date(ldate);
@@ -78,17 +117,20 @@
 
      			var bufferDays = 43 - miniCalendar.find(".a-date").length;
 
-		        if(ldate.getMonth() != month)
-		        	for (var i = 1; i < bufferDays; i++)
-		     			tbody.append(dateTpl(true, i));
+		        if(ldate.getMonth() != month){
+		        	for(var i = 1; i < bufferDays; i++){
+						tbody.append(dateTpl(true, i));
+					}
+				}
      		}
  		}
 
  		function lastDaysOfPrevMonth(day){
  			if(curMonth > 0){
-     			var monthIdx = curMonth - 1;
-     			var yearIdx = curYear;
-     		}else{
+				var monthIdx = curMonth - 1;
+				var yearIdx = curYear;
+			}
+			else{
      			if(curMonth < 11){
      				var monthIdx = 0;
      				var yearIdx = curYear + 1;
@@ -152,13 +194,13 @@
 		}
 
 		function getMonthDays(month, year) {
-		     var date = new Date(year, month, 1);
-		     var days = [];
-		     while (date.getMonth() === month) {
-		        days.push(date.getDate());
-		        date.setDate(date.getDate() + 1);
-		     }
-		     return days;
+			var date = new Date(year, month, 1);
+			var days = [];
+			while (date.getMonth() === month) {
+				days.push(date.getDate());
+				date.setDate(date.getDate() + 1);
+			}
+			return days;
 		}
 
 		populateCalendar(curMonth, curYear);
