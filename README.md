@@ -23,7 +23,7 @@ A mini calendar with events JQuery plugin.
     });
 ```
 
-You can also use [example.html](/example.html?raw=true) as a reference point
+You can also use [example.html](/example.html) as a reference point
 
 ## Screenshots
 
