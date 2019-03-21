@@ -7,27 +7,27 @@
 	<h3>With events...</h3>
 	<div id="calendar" style="width: 30%;"></div> <br>
 
-	<h3>No events, starts on Monday....</h3>
+	<h3>Without events....</h3>
 	<div id="calendar2" style="width: 25%;"></div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="src/mini-event-calendar.js"></script>
+	<script src="src/mini-event-calendar.min.js"></script>
 
 	<script>
 	    var db_events = [
 	    	{
-	            title: "Board members meeting",
-	            date: 1550303738939, // February 16 2019
+	            title: "Board members meeting.",
+	            date: 1532381440036,
 	            link: "events.com/ev2"
 	        },
 	        {
-	            title: "Delaware branch opening",
-	            date: 1553154938939, // March 21 2019
+	            title: "Delaware branch opening.",
+	            date: 1532467961534,
 	            link: "events.com/ev1"
 	        },
 	        {
-	            title: "An important event",
-	            date: 1554796538939, // April 9th 2019
+	            title: "An important event.",
+	            date: 1532554405128,
 	            link: "events.com/ev1"
 	        }
 	    ];
@@ -39,9 +39,7 @@
 			});
 
 			//if you don't have events, use
-			$("#calendar2").MEC({
-				from_monday: true
-			});
+			$("#calendar2").MEC();
 		});
 	</script>
 </body>

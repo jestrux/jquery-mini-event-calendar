@@ -1,65 +1,35 @@
 (function( $ ) {
-	var calenderTpl = `
-		<div id="calTitle">
-			<button class="month-mover prev">
-				<svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
-					<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-				</svg>
-			</button>
-			<div id="monthYear"></div>
-			<button class="month-mover next">
-				<svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
-					<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-				</svg>
-			</button>
-		</div>
-		<div>
-			<div id="calThead"></div>
-			<div id="calTbody"></div>
-		</div>
-		<div id="calTFooter">
-			<h3 id="eventTitle">No events today.</h3>
-			<a href="javascript:void(0);" id="calLink">ALL EVENTS</a>
-		</div>
-	`;
-	var weekDaysFromSunday = '<div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>';
-	var weekDaysFromMonday = '<div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div>';
-	var shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
+	var calenderTpl = '<div id="calTitle"><button class="month-mover prev"><svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button><div id="monthYear"></div><button class="month-mover next"><svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button></div><div><div id="calThead"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div><div id="calTbody"></div></div><div id="calTFooter"><h3 id="eventTitle">No events today.</h3><a href="javascript:void(0);" id="calLink">ALL EVENTS</a></div>';
+	var short_months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
 	var today = new Date();
-	var curMonth = today.getMonth();
-	var curYear = today.getFullYear();
+	var cur_month = today.getMonth();
+	var cur_year = today.getFullYear();
 
     $.fn.miniEventCalendar = $.fn.MEC = function(options) {
     	var settings = $.extend({
-			calendar_link : "",
-    		events: [],
-			from_monday: false
+    		calendar_link : "",
+    		events: []
         }, options );
 
-        var miniCalendar = this;
+        var mini_cal = this;
 
-        miniCalendar.addClass('mini-cal').html(calenderTpl);
+        mini_cal.addClass('mini-cal').html(calenderTpl);
 
-		var thead = miniCalendar.find("#calThead");
-		var tbody = miniCalendar.find("#calTbody");
-		var calTitle = miniCalendar.find("#monthYear");
-		var calFooter = miniCalendar.find("#calTFooter");
-        var eventTitle = miniCalendar.find("#eventTitle");
-		var eventsLink = miniCalendar.find("#calLink");
+        var tbody = mini_cal.find("#calTbody");
+		var cal_title = mini_cal.find("#monthYear");
+		var cal_footer = mini_cal.find("#calTFooter");
+        var event_title = mini_cal.find("#eventTitle");
+		var events_link = mini_cal.find("#calLink");
 
-        eventTitle.text("No events today.");
-		eventsLink.text("ALL EVENTS");
-		eventsLink.attr("href", settings.calendar_link);
-
-		if(settings.from_monday)
-			thead.html(weekDaysFromMonday);
-		else
-			thead.html(weekDaysFromSunday);
+		cal_title.text("Feb 2018");
+        event_title.text("No events today.");
+		events_link.text("ALL EVENTS");
+		events_link.attr("href", settings.calendar_link);
 
 		if(!settings.calendar_link.length && !settings.events.length)
-			calFooter.css("display", "none");
+			cal_footer.css("display", "none");
 
-		miniCalendar.find(".month-mover").each(function(){
+		mini_cal.find(".month-mover").each(function(){
 			var mover = $(this);
 			mover.bind("click", function(){
 				if(mover.hasClass("next"))
@@ -69,90 +39,79 @@
 			});
 		});
 
-		miniCalendar.on("click, focusin", ".a-date", function(){
+		mini_cal.on("click, focusin", ".a-date", function(){
 		    if(!$(this).hasClass('blurred'))
 		        showEvent($(this).data('event'));
 		});
 
 		function populateCalendar(month, year) {
 			tbody.html("");
-			calTitle.text(shortMonths[month] + " " + year);
+			cal_title.text(short_months[month] + " " + year);
 
-			curMonth = month;
-			curYear = year;
+			cur_month = month;
+			cur_year = year;
 
 			var ldate = new Date(year, month);
 			var dt = new Date(ldate);
 
-			if(!settings.from_monday){
-				var weekDay = dt.getDay();
-				if(ldate.getDate() === 1 && weekDay != 1)
-					tbody.append(lastDaysOfPrevMonth(weekDay));
-			}
-			else{
-				var weekDay = dt.getDay() > 0 ? dt.getDay() - 1 : 6;
-				if(ldate.getDate() === 1 && weekDay !== 0)
-					tbody.append(lastDaysOfPrevMonth(weekDay));
-			}
+			if(ldate.getDate() === 1 && dt.getDay() != 1)
+					tbody.append(last_prev_month_days(dt.getDay()));
 
 			while (ldate.getMonth() === month) {
      			dt = new Date(ldate);
 
      			var isToday = areSameDate(ldate, new Date());
      			var event = null;
-     			var eventIndex = settings.events.findIndex(function(ev) {
+     			var event_index = settings.events.findIndex(function(ev) {
 		     		return areSameDate(dt, new Date(ev.date));
 		     	});
 
-		        if(eventIndex != -1){
-		        	event = settings.events[eventIndex];
+		        if(event_index != -1){
+		        	event = settings.events[event_index];
 
 		        	if(isToday)
 		        		showEvent(event);
 		        }
 
-     			tbody.append(dateTpl(false, ldate.getDate(), isToday, event));
+     			tbody.append(date_tpl(false, ldate.getDate(), isToday, event));
 
      			ldate.setDate(ldate.getDate() + 1);
 
-     			var bufferDays = 43 - miniCalendar.find(".a-date").length;
+     			var buffer_days = 43 - mini_cal.find(".a-date").length;
 
-		        if(ldate.getMonth() != month){
-		        	for(var i = 1; i < bufferDays; i++){
-						tbody.append(dateTpl(true, i));
-					}
-				}
+		        if(ldate.getMonth() != month)
+		        	for (var i = 1; i < buffer_days; i++)
+		     			tbody.append(date_tpl(true, i));
      		}
  		}
 
- 		function lastDaysOfPrevMonth(day){
- 			if(curMonth > 0){
-				var monthIdx = curMonth - 1;
-				var yearIdx = curYear;
-			}
-			else{
-     			if(curMonth < 11){
-     				var monthIdx = 0;
-     				var yearIdx = curYear + 1;
+ 		function last_prev_month_days(day){
+ 			if(cur_month > 0){
+     			var month_idx = cur_month - 1;
+     			var year_idx = cur_year;
+     		}else{
+     			if(cur_month < 11){
+     				var month_idx = 0;
+     				var year_idx = cur_year + 1;
      			}else{
-     				var monthIdx = 11;
-     				var yearIdx = curYear - 1;
+     				var month_idx = 11;
+     				var year_idx = cur_year - 1;
      			}
      		}
      		
-     		var prevMonth = getMonthDays(monthIdx, yearIdx);
-     		var lastDays = "";
+     		var prev_month = getMonthDays(month_idx, year_idx);
+     		var last_days = "";
         	for (var i = day; i > 0; i--)
-     			lastDays += dateTpl(true, prevMonth[prevMonth.length - i]);
+     			last_days += date_tpl(true, prev_month[ prev_month.length - i]);
 
-        	return lastDays;
+        	return last_days;
  		}
 
-		function dateTpl(blurred, date, isToday, event){
+		function date_tpl(blurred, date, is_today, event){
 			var tpl = "<div class='a-date blurred'><span>"+date+"</span></div>";
 
 			if(!blurred){
-		        var cls = isToday ? "current " : "";
+		        var cls = is_today ? "current " : "";
 		        cls += event && event !== null ? "event " : "";
 		        
 		        var tpl ="<button class='a-date "+cls+"' data-event='"+JSON.stringify(event)+"'><span>"+date+"</span></button>";
@@ -163,28 +122,28 @@
 
 		function showEvent(event){
 			if(event && event !== null && event !== undefined){
-				eventTitle.text(event.title);
-				eventsLink.text("VIEW EVENT");
-				eventsLink.attr("href", event.link);
+				event_title.text(event.title);
+				events_link.text("VIEW EVENT");
+				events_link.attr("href", event.link);
 			}else{
-				eventTitle.text("No events on this day.");
-				eventsLink.text("ALL EVENTS");
-				eventsLink.attr("href", settings.calendar_link);
+				event_title.text("No events on this day.");
+				events_link.text("ALL EVENTS");
+				events_link.attr("href", settings.calendar_link);
 			}
 		}
 
 		function viewNextMonth(){
-			var nextMonth = curMonth < 11 ? curMonth + 1 : 0;
-			var nextYear = curMonth < 11 ? curYear : curYear + 1;
+			var next_month = cur_month < 11 ? cur_month + 1 : 0;
+			var next_year = cur_month < 11 ? cur_year : cur_year + 1;
 
-			populateCalendar(nextMonth, nextYear);
+			populateCalendar(next_month, next_year);
 		}
 
 		function viewPrevMonth(){
-			var prevMonth = curMonth > 0 ? curMonth - 1 : 11;
-			var prevYear = curMonth > 0 ? curYear : curYear - 1;
+			var prev_month = cur_month > 0 ? cur_month - 1 : 11;
+			var prev_year = cur_month > 0 ? cur_year : cur_year - 1;
 			
-			populateCalendar(prevMonth, prevYear);
+			populateCalendar(prev_month, prev_year);
 		}
 
 		function areSameDate(d1, d2) {
@@ -194,18 +153,18 @@
 		}
 
 		function getMonthDays(month, year) {
-			var date = new Date(year, month, 1);
-			var days = [];
-			while (date.getMonth() === month) {
-				days.push(date.getDate());
-				date.setDate(date.getDate() + 1);
-			}
-			return days;
+		     var date = new Date(year, month, 1);
+		     var days = [];
+		     while (date.getMonth() === month) {
+		        days.push(date.getDate());
+		        date.setDate(date.getDate() + 1);
+		     }
+		     return days;
 		}
 
-		populateCalendar(curMonth, curYear);
+		populateCalendar(cur_month, cur_year);
 
-        return miniCalendar;
+        return mini_cal;
     };
  
 }( jQuery ));
