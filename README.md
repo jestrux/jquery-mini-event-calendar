@@ -1,12 +1,32 @@
 # jquery-mini-event-calendar
-Jquery mini event calendar.
+A mini calendar with events JQuery plugin.
 
-## how to use
-Download and include `mini-event-calendar.min.js` and `mini-event-calendar.min.css` then include them in your site.
+## How to use
 
-Check out `example.html` to see how to use.
+- Download [mini-event-calendar.min.js](/src/mini-event-calendar.min.js?raw=true) and [mini-event-calendar.min.css](/src/mini-event-calendar.min.css?raw=true) 
+- Include them in your html
+- Copy and paste the code below.
 
-## screenshots
+``` javascript
+    // TODO: Replace with real events, say from server.
+    var db_events = [{
+        title: "Board members meeting",
+        date: new Date().getTime(),
+        link: "events.com/ev2"
+    }];
+
+    $(document).ready(function(){
+        $("#calendar").MEC({
+            calendar_link: "example.com/myCalendar",
+            events: db_events
+        });
+    });
+```
+
+You can also use [example.html](/example.html?raw=true) as a reference point
+
+## Screenshots
+
 Event happening today
 ![Event today](/screenshots/event-today.png?raw=true "Event today screenshot")
 
