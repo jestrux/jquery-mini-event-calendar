@@ -4,43 +4,72 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="src/mini-event-calendar.min.css">
 
-	<h3>With events...</h3>
-	<div id="calendar" style="width: 30%;"></div> <br>
+	<!-- Demo Styles -->
+	<style>
+		/* Just an excuse to use CSS Grid 😊 */
+		#wrapper{
+			padding: 40px;
+			display: grid; 
+			grid-gap: 40px; 
+			grid-template-columns: 1fr 1fr 1fr;
+		}
 
-	<h3>No events, starts on Monday....</h3>
-	<div id="calendar2" style="width: 25%;"></div>
+		[id^=calendar],
+		[id^=calendar] + h3{
+			width: 400px;
+		}
+
+		[id^=calendar] + h3{
+			text-align: center;
+		}
+	</style>
+	<div id="wrapper">
+		<div>
+			<div id="calendar"></div>
+			<h3>Default options</h3>
+		</div>
+	
+		<div>
+			<div id="calendar2"></div>
+			<h3>Start week days from monday</h3>
+		</div>
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="src/mini-event-calendar.js"></script>
 
 	<script>
-	    var db_events = [
+		var sameDaylastWeek = new Date().setDate(new Date().getDate() - 7);
+		var someDaynextMonth = new Date().setDate(new Date().getDate() + 31);
+
+		// All dates should be provided in timestamps
+	    var sampleEvents = [
 	    	{
-	            title: "Board members meeting",
-	            date: 1550303738939, // February 16 2019
-	            link: "events.com/ev2"
+	            title: "Soulful sundays bay area",
+	            date: sameDaylastWeek, // Same day as today, last week
+	            link: "https://www.eventbrite.com/e/soulful-sundays-bay-area-edition-tickets-55214242285?aff=ehomecard"
 	        },
 	        {
-	            title: "Delaware branch opening",
-	            date: 1553154938939, // March 21 2019
-	            link: "events.com/ev1"
+	            title: "London Comicon",
+	            date: new Date().getTime(), // Today
+	            link: "https://www.eventbrite.co.uk/e/london-film-comic-con-summer-2019-tickets-49472593860?aff=ebdssbdestsearch"
 	        },
 	        {
-	            title: "An important event",
-	            date: 1554796538939, // April 9th 2019
-	            link: "events.com/ev1"
+	            title: "Youth Athletic Camp",
+	            date: someDaynextMonth, // Some day as today, next month
+	            link: "https://www.eventbrite.com/e/leaner-stronger-faster-tm-youth-athletic-camp-2021-tickets-38245970728?aff=ebdssbdestsearch"
 	        }
 	    ];
 
 		$(document).ready(function(){
 			$("#calendar").MEC({
-				calendar_link: "example.com/myCalendar",
-				events: db_events
+				events: sampleEvents
 			});
 
-			//if you don't have events, use
+			// Make calendar start on monday
 			$("#calendar2").MEC({
-				from_monday: true
+				from_monday: true,
+				events: sampleEvents
 			});
 		});
 	</script>
