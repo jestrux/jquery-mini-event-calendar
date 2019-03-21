@@ -25,9 +25,6 @@
 	var weekDaysFromSunday = '<div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>';
 	var weekDaysFromMonday = '<div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div>';
 	var shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
-	var today = new Date();
-	var curMonth = today.getMonth();
-	var curYear = today.getFullYear();
 
     $.fn.miniEventCalendar = $.fn.MEC = function(options) {
     	var settings = $.extend({
@@ -36,7 +33,7 @@
 			from_monday: false
         }, options );
 
-        var miniCalendar = this;
+		var miniCalendar = this;
 
         miniCalendar.addClass('mini-cal').html(calenderTpl);
 
@@ -46,6 +43,10 @@
 		var calFooter = miniCalendar.find("#calTFooter");
         var eventTitle = miniCalendar.find("#eventTitle");
 		var eventsLink = miniCalendar.find("#calLink");
+
+		var today = new Date();
+		var curMonth = today.getMonth();
+		var curYear = today.getFullYear();
 
         eventTitle.text("No events today.");
 		eventsLink.text("ALL EVENTS");
@@ -83,17 +84,13 @@
 
 			var ldate = new Date(year, month);
 			var dt = new Date(ldate);
+			var weekDay = dt.getDay();
 
-			if(!settings.from_monday){
-				var weekDay = dt.getDay();
-				if(ldate.getDate() === 1 && weekDay != 1)
-					tbody.append(lastDaysOfPrevMonth(weekDay));
-			}
-			else{
-				var weekDay = dt.getDay() > 0 ? dt.getDay() - 1 : 6;
-				if(ldate.getDate() === 1 && weekDay !== 0)
-					tbody.append(lastDaysOfPrevMonth(weekDay));
-			}
+			if(settings.from_monday)
+				weekDay = dt.getDay() > 0 ? dt.getDay() - 1 : 6;
+
+			if(ldate.getDate() === 1)
+				tbody.append(lastDaysOfPrevMonth(weekDay));
 
 			while (ldate.getMonth() === month) {
      			dt = new Date(ldate);
