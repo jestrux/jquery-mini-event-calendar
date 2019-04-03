@@ -70,14 +70,22 @@
 			});
 		});
 
-		miniCalendar.on("click, focusin", ".a-date", function(){
-		    if(!$(this).hasClass('blurred'))
-		        showEvent($(this).data('event'));
+		miniCalendar.on("click, focusin, touchstart", ".a-date", function(){
+			$(".a-date").removeClass('focused');
+		    if(!$(this).hasClass('blurred')){
+				showEvent($(this).data('event'));
+				$(this).focus();
+				$(this).addClass('focused');
+			}
 		});
 
-		function populateCalendar(month, year) {
+		function populateCalendar(month, year, onInit) {
 			tbody.html("");
 			calTitle.text(shortMonths[month] + " " + year);
+			eventTitle.text("Click day to see event");
+			eventsLink.text("All Events");
+			eventsLink.attr("href", "#");
+
 
 			curMonth = month;
 			curYear = year;
@@ -104,11 +112,11 @@
 		        if(eventIndex != -1){
 		        	event = settings.events[eventIndex];
 
-		        	if(isToday)
+		        	if(onInit && isToday)
 		        		showEvent(event);
 		        }
 
-     			tbody.append(dateTpl(false, ldate.getDate(), isToday, event));
+     			tbody.append(dateTpl(false, ldate.getDate(), isToday, event, onInit && isToday));
 
      			ldate.setDate(ldate.getDate() + 1);
 
@@ -145,12 +153,14 @@
         	return lastDays;
  		}
 
-		function dateTpl(blurred, date, isToday, event){
+		function dateTpl(blurred, date, isToday, event, isSelected){
 			var tpl = "<div class='a-date blurred'><span>"+date+"</span></div>";
 
 			if(!blurred){
+				var hasEvent = event && event !== null;
 		        var cls = isToday ? "current " : "";
-		        cls += event && event !== null ? "event " : "";
+		        cls += hasEvent && isSelected ? "focused " : "";
+		        cls += hasEvent ? "event " : "";
 		        
 		        var tpl ="<button class='a-date "+cls+"' data-event='"+JSON.stringify(event)+"'><span>"+date+"</span></button>";
 			}
@@ -200,7 +210,7 @@
 			return days;
 		}
 
-		populateCalendar(curMonth, curYear);
+		populateCalendar(curMonth, curYear, true);
 
         return miniCalendar;
     };

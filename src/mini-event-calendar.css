@@ -117,14 +117,15 @@
     outline: 0;
 }
 
-#calTbody .a-date.current.event{
-    background-color: #fffc23;
-    color: #000;
-}
-
+#calTbody .a-date.focused,
 #calTbody .a-date:focus,
 #calTbody .a-date:active{
     background: #3f4042;
+}
+
+#calTbody .a-date.current.event.focused{
+    background-color: #fffc23;
+    color: #000;
 }
 
 #calTFooter{
@@ -159,5 +160,4 @@
     overflow: hidden;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
-
 }
