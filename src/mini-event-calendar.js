@@ -70,9 +70,13 @@
 			});
 		});
 
-		miniCalendar.on("click, focusin", ".a-date", function(){
-		    if(!$(this).hasClass('blurred'))
-		        showEvent($(this).data('event'));
+		miniCalendar.on("click, focusin, touchstart", ".a-date", function(){
+			$(".a-date").removeClass('focused');
+		    if(!$(this).hasClass('blurred')){
+				showEvent($(this).data('event'));
+				$(this).focus();
+				$(this).addClass('focused');
+			}
 		});
 
 		function populateCalendar(month, year) {

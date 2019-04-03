@@ -122,6 +122,7 @@
     color: #000;
 }
 
+#calTbody .a-date.focused,
 #calTbody .a-date:focus,
 #calTbody .a-date:active{
     background: #3f4042;
@@ -159,5 +160,4 @@
     overflow: hidden;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
-
 }
