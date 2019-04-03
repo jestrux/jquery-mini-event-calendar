@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="src/mini-event-calendar.min.css">
 
 	<!-- Demo Styles -->
 	<style>
+		html, body{
+			margin: 0;
+			padding: 0;
+		}
 		/* Just an excuse to use CSS Grid 😊 */
 		#wrapper{
 			padding: 40px;
@@ -22,6 +28,24 @@
 		[id^=calendar] + h3{
 			text-align: center;
 		}
+
+		@media only screen and (max-width: 500px){
+			#wrapper{
+				padding: 1em;
+				display: block;
+			}
+			[id^=calendar],
+			[id^=calendar] + h3{
+				width: 100%;
+				max-width: 400px;
+				margin: 1em auto;
+			}
+
+			[id^=calendar] + h3{
+				display: block;
+				margin-bottom: 2em;
+			}
+		}
 	</style>
 	<div id="wrapper">
 		<div>
@@ -36,7 +60,7 @@
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="src/mini-event-calendar.js"></script>
+	<script src="src/mini-event-calendar.min.js"></script>
 
 	<script>
 		var sameDaylastWeek = new Date().setDate(new Date().getDate() - 7);
