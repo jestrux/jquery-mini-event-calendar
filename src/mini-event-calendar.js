@@ -71,7 +71,7 @@
 			});
 		});
 
-		miniCalendar.on("click, focusin, touchstart", ".a-date", function(){
+		miniCalendar.on("click touchstart", ".a-date", function(){
 			$(".a-date").removeClass('focused');
 		    if(!$(this).hasClass('blurred')){
 				showEvent($(this).data('event'));
