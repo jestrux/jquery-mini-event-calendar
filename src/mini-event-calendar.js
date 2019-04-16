@@ -30,7 +30,8 @@
     	var settings = $.extend({
 			calendar_link : "",
     		events: [],
-			from_monday: false
+			from_monday: false,
+			onMonthChanged: null
         }, options );
 
 		var miniCalendar = this;
@@ -127,7 +128,11 @@
 						tbody.append(dateTpl(true, i));
 					}
 				}
-     		}
+			}
+			 
+			if(settings.onMonthChanged){
+				settings.onMonthChanged(month, year);
+			}
  		}
 
  		function lastDaysOfPrevMonth(day){
