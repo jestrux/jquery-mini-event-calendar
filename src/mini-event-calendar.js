@@ -1,13 +1,13 @@
 (function( $ ) {
 	var calenderTpl = `
 		<div id="calTitle">
-			<button class="month-mover prev">
+			<button type="button" class="month-mover prev">
 				<svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
 					<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
 				</svg>
 			</button>
 			<div id="monthYear"></div>
-			<button class="month-mover next">
+			<button type="button" class="month-mover next">
 				<svg fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
 					<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
 				</svg>
@@ -63,7 +63,8 @@
 
 		miniCalendar.find(".month-mover").each(function(){
 			var mover = $(this);
-			mover.bind("click", function(){
+			mover.bind("click", function(e){
+				e.preventDefault();
 				if(mover.hasClass("next"))
 					viewNextMonth();
 				else
@@ -71,7 +72,8 @@
 			});
 		});
 
-		miniCalendar.on("click touchstart", ".a-date", function(){
+		miniCalendar.on("click touchstart", ".a-date", function(e){
+			e.preventDefault(); 
 			$(".a-date").removeClass('focused');
 		    if(!$(this).hasClass('blurred')){
 				showEvent($(this).data('event'));
@@ -167,7 +169,7 @@
 		        cls += hasEvent && isSelected ? "focused " : "";
 		        cls += hasEvent ? "event " : "";
 		        
-		        var tpl ="<button class='a-date "+cls+"' data-event='"+JSON.stringify(event)+"'><span>"+date+"</span></button>";
+		        var tpl ="<button type='button' class='a-date "+cls+"' data-event='"+JSON.stringify(event)+"'><span>"+date+"</span></button>";
 			}
 
 			return tpl;
