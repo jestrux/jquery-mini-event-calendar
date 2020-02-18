@@ -31,6 +31,6 @@ Event happening today
 
 ![Event today](/screenshots/event-today.png?raw=true "Event today screenshot")
 
-Calendar can be set to start on monday by setting `from_monday: true`
+Calendar can be set to start on monday by setting  `from_monday: true`
 
 ![Event other day](/screenshots/calendar-starts-monday.png?raw=true "Calendar starts on monday screenshot")
